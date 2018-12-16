@@ -50,6 +50,17 @@
 				}
 			}
 		?>
+		<br>
+		<br>
+		Links:
+		<?php
+			if ($artifact->links) {
+				for ($i = 0; $i < sizeof($artifact->links); $i++) {
+					echo $artifact->links[$i];
+					echo ' ';
+				}
+			}
+		?>
 	</div>
 <script src="assets/requestscript.js"></script>
 </body>
