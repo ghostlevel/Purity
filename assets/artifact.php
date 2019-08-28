@@ -28,6 +28,9 @@ class Artifact {
 	//pure path array, no styling
 	public $brokenPath = array();
 
+	//last modified time in unix timestamp
+	public $lastModifiedStamp = null;
+
 	//constructor parses file to retrieve its contents
 	public function __construct($filePath, $brokenPath) {
 
@@ -36,10 +39,13 @@ class Artifact {
 
 		if ($file) {
 			$currentKey = null;
-
+			$lineCount = 0;
 			while (($line = fgets($file)) !== false) {
 
 				$multiline = true;
+
+				//remove utf8 bom characters from first line of file
+				if ($lineCount == 0) $line = remove_utf8_bom($line);
 
 				//skip lines starting with '//' and empty lines
 				if ((substr($line, 0, 2)) === '//' || trim($line) === '') continue;
@@ -71,6 +77,8 @@ class Artifact {
 					if (substr($line, 0, 1) === '+' && substr($line, 1, 1) !== ' ' && substr($line, 1, 1) !== '+') $this->attributes[$currentKey] = $this->attributes[$currentKey].'<br>';
 					else $this->attributes[$currentKey] = $this->attributes[$currentKey].$line;
 				}
+
+				$lineCount++;
 			}
 		}
 		fclose($file);
@@ -80,6 +88,9 @@ class Artifact {
 		array_shift($brokenPath); //remove pages directory
 		array_push($brokenPath, $this->attributes['name']); //add page name 
 		$this->path = $brokenPath;
+
+		//get file's last modified timestamp
+		$this->lastModifiedStamp = date(filemtime($filePath));
 	}
 
 	//returns true if artifact has tag ($string)
@@ -224,5 +235,12 @@ function getRelated($artifact, $getName, $nameStyle, $titleStyle, $sameStyle) {
 
 	//return $contents;
 	return $contents;
+}
+
+//remove UTF8 Bom
+function remove_utf8_bom($text) {
+	$bom = pack('H*','EFBBBF');
+	$text = preg_replace("/^$bom/", '', $text);
+	return $text;
 }
 ?>

@@ -28,7 +28,6 @@ Here follows a list of all _[rules], a description for each one, and an accompan
 Creates a list of artifacts that have this tag.
 =[page]
 
-
 %[======================================]
 - [tag] title list
 +
@@ -133,11 +132,25 @@ Creates a custom link to any given URL.
 @[Custom link>https://github.com/v-exec/Purity]
 
 %[======================================]
-& [dir>img _[optional] ++ text] image
+& [dir>image _[optional] ++ text] image
 +
 +
 Creates an image, with an optional annotation.
 &[example>di ++ Annotation.]
+
+%[======================================]
+^ [dir>audio  _[optional] ++ text] audio
++
++
+Creates an audio element, with an optional title.
+^[example>mythaphil ++ Annotation.]
+
+%[======================================]
+< [dir>video  _[optional] ++ text] video
++
++
+Creates a video element, with an optional annotation.
+<[example>nom ++ Annotation.]
 
 %[======================================]
 * [text] bold
@@ -156,7 +169,6 @@ Makes text italic.
 +
 +
 _[Italic text.]
-
 
 %[======================================]
 % [] div
